@@ -1,0 +1,27 @@
+version: "3.7"
+
+services:
+  elasticsearch:
+    image: "docker.elastic.co/elasticsearch/elasticsearch:7.13.4"
+    environment:
+      discovery.type: "single-node"
+      cluster.name: "cluster-1"
+      node.name: "node-1"
+    ports: 
+      - "9200:9200"
+    volumes: 
+      - "/Users/fitraaditama/Develop/elasticsearch_data:/usr/share/elasticsearch/data"
+
+  elastichq:
+    image: "elastichq/elasticsearch-hq"
+    ports: 
+      - "5000:5000"
+    depends_on: 
+      - "elasticsearch"
+  
+  cerebro:
+    image: "lmenezes/cerebro"
+    ports: 
+      - "9000:9000"
+    depends_on: 
+      - "elasticsearch"
